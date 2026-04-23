@@ -223,7 +223,7 @@ KDB: stack backtrace:
                     output = Object.keys(fileSystem).join('  ') + '\n';
                 } else if (cmd.startsWith('cat')) {
                     if (cmd === 'cat') {
-                        output = "cat: illegal option -- -\nusage: cat [-belnstuv] [file …]\n";
+                        output = "cat: illegal option -- -\nusage: cat [file …]\n";
                     } else {
                         const fileName = cmd.split(' ')[1];
                         output = (fileSystem[fileName] || `cat: ${fileName}: No such file or directory`) + '\n';
