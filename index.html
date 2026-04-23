@@ -74,7 +74,7 @@
         <section>
             <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat contacts.txt</span></p>
             <div class="contacts">
-                <p>Email: <a href="mailto:root@cryptopunks.org" class="link-styled">root@cryptopunks.org</a></p>
+                <p>Email: <a href="mailto:me@cryptopunks.org" class="link-styled">me@cryptopunks.org</a></p>
             </div>
         </section>
 
@@ -148,7 +148,7 @@
             "languages.txt": "Belarusian (Native), Russian (Native), Polish (Elementary), English (Limited Working), Ukrainian (Limited Working), Georgian (Elementary)",
             "experience.txt": "Freelance (Pentester, 2024-Present), RevenueLab.biz (Pentester, 2019-2023), Enchee (SysAdmin, 2014-2019)...",
             "education.txt": "Russian University of Cooperation (2008-2012), Belarusian College of Business and Law (2004-2008)",
-            "contacts.txt": "Email: root@cryptopunks.org",
+            "contacts.txt": "Email: me@cryptopunks.org",
             "url.txt": "cv.cryptopunks.org",
             "projects.txt": "TrueBSD: https://truebsdorg.github.io\ncryptopunks.org: https://cryptopunks.org\nTbilisi, can i Run: https://canirun.github.io/"
         };
@@ -228,7 +228,7 @@ KDB: stack backtrace:
                         output = (fileSystem[fileName] || `cat: ${fileName}: No such file or directory`) + '\n';
                     }
                 } else if (cmd === 'uname' || cmd === 'uname -a') {
-                    output = 'TrueBSD cv.cryptopunks.org 2.0-RELEASE TrueBSD 2.0-RELEASE #0 releng/2.0-n268512-b7c1c3cbdea: Tue Mar 10 06:12:34 UTC 2026     root@truebsdorg.github.io:/usr/obj/usr/src/amd64.amd64/sys/GENERIC amd64\n';
+                    output = 'TrueBSD cv.cryptopunks.org 2.0-RELEASE TrueBSD 2.0-RELEASE #0 releng/2.0-n268512-b7c1c3cbdea: Tue Mar 10 06:12:34 UTC 2026     me@cryptopunks.org:/usr/obj/usr/src/amd64.amd64/sys/GENERIC amd64\n';
                 } else if (cmd === 'help') {
                     output = "Available commands: ls, cat, uname, help, exploit, halt\n";
                 } else if (cmd === 'exploit') {
