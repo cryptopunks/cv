@@ -84,12 +84,13 @@
             <p>Available commands: ls, cat, uname, help, exploit, halt</p>
         </section>
 
-        <footer>
+        <div id="terminal-output"></div>
+
+        <footer style="position: relative; padding-bottom: 20px;">
             <p>
                 <span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span>
                 <span id="input-display" class="command"></span><span class="cursor">_</span>
             </p>
-            <!-- Скрытый input для мобильной клавиатуры -->
             <input
                 id="mobile-input"
                 type="text"
@@ -97,7 +98,7 @@
                 autocorrect="off"
                 autocapitalize="off"
                 spellcheck="false"
-                style="position:fixed; opacity:0; pointer-events:none; width:1px; height:1px; top:0; left:0;"
+                style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; font-size: 16px; border: none; outline: none; background: transparent; caret-color: transparent;"
             >
         </footer>
     </div>
@@ -106,35 +107,28 @@
         let isSystemCrashed = false;
         const inputDisplay = document.getElementById('input-display');
         const mobileInput = document.getElementById('mobile-input');
-        const terminalOutput = document.createElement('div');
-        terminalOutput.id = 'terminal-output';
-        document.querySelector('.terminal').insertBefore(terminalOutput, document.querySelector('footer'));
+        const terminalOutput = document.getElementById('terminal-output');
 
-        // Фокус при тапе на терминал (для мобильных)
+        function scrollToInput() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
         document.querySelector('.terminal').addEventListener('click', (e) => {
-            // Не перехватываем клики по ссылкам
-            if (e.target.tagName === 'A') return;
-            if (!isSystemCrashed) {
-                mobileInput.focus();
-            }
+            if (e.target.tagName === 'A' || isSystemCrashed) return;
+            mobileInput.focus();
         });
 
-        // Синхронизация мобильного ввода с визуальным дисплеем
         mobileInput.addEventListener('input', () => {
             inputDisplay.textContent = mobileInput.value;
             scrollToInput();
         });
 
-        // Обработка Enter на мобильном
-        mobileInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                setTimeout(() => { mobileInput.value = ''; }, 0);
-            }
+        mobileInput.addEventListener('focus', () => {
+            setTimeout(scrollToInput, 300);
         });
-        
-        function scrollToInput() {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
 
         async function handleHalt(command) {
             isSystemCrashed = true;
@@ -171,8 +165,8 @@
 
             for (let i = 0; i < haltMessages.length; i++) {
                 terminalOutput.innerHTML += `<p style="margin: 0;">${haltMessages[i]}</p>`;
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                const delay = (i >= haltMessages.length - 3) ? 800 : Math.floor(Math.random() * (250 - 50 + 1)) + 50;
+                scrollToInput();
+                const delay = (i >= haltMessages.length - 3) ? 800 : Math.floor(Math.random() * 200) + 50;
                 await new Promise(resolve => setTimeout(resolve, delay));
             }
             window.location.href = 'halt.jpg';
@@ -183,7 +177,7 @@
             "about.txt": "I'm a Linux security engineer and penetration tester with 10+ years of hands-on experience. I help businesses of all sizes find real vulnerabilities before attackers do — and fix them properly. My work spans web and API pentesting, Linux system hardening, Docker security audits, intrusion detection, and incident forensics. I'm an active bug bounty hunter on HackerOne, which means I stay sharp on real-world attack techniques — not just theory. I don't trust defaults. I dig into how systems actually work, find what scanners miss, and deliver findings that are clear enough to act on immediately. If you need someone who thinks like an attacker but works on your side — let's talk.",
             "skills.txt": "Bash, Linux/FreeBSD, Python, Pentest, Burp Suite, OWASP ZAP, Docker, Bug Bounty, Forensics",
             "languages.txt": "Belarusian (Native), Russian (Native), Polish (Elementary), English (Limited Working), Ukrainian (Limited Working), Georgian (Elementary)",
-            "experience.txt": "Freelance (Pentester, 2024-Present), RevenueLab.biz (Pentester, 2019-2023), Enchee (SysAdmin, 2014-2019)...",
+            "experience.txt": "Freelance (Pentester, 2024-Present), RevenueLab.biz (Pentester, 2019-2023), Enchee (SysAdmin, 2014-2019), Freelance (Python/Flask, 2014-2019), vkusnoserver.ru (SysAdmin, 2014), Koshik Idey (PHP, 2012-2013), Codex-Soft (Drupal, 2012), Bitech Krakow (SysAdmin, 2011-2012), Streamline VAS (SysAdmin/Programmer, 2006-2011), TrueBSD Project (Main Developer, 2007-2009), Mobile Communication (SysAdmin, 2004-2006)",
             "education.txt": "Russian University of Cooperation (2008-2012), Belarusian College of Business and Law (2004-2008)",
             "contacts.txt": "Email: me@cryptopunks.org",
             "urls.txt": "cv.cryptopunks.org\ncryptopunks.org",
@@ -196,7 +190,6 @@
 
             setTimeout(async () => {
                 document.querySelector('footer').style.display = 'none';
-
                 const logLines = [
                     "[*] Target: TrueBSD 2.0-RELEASE amd64",
                     "[*] Searching for kernel symbols...",
@@ -211,7 +204,7 @@
 
                 for (const line of logLines) {
                     terminalOutput.innerHTML += `<p style="margin: 0;">${line.replace(/\s/g, '&nbsp;')}</p>`;
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    scrollToInput();
                     await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 100));
                 }
 
@@ -244,49 +237,55 @@ KDB: stack backtrace:
 #0 0xffffffff80b2d1e0 at exploit+0x0
 </pre>`;
                 terminalOutput.innerHTML += panicBlock;
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                scrollToInput();
             }, 500);
         }
 
         function processCommand(cmd) {
             let output = '';
+            const cleanCmd = cmd.trim();
 
-            if (cmd === 'ls') {
+            if (cleanCmd === 'ls') {
                 output = Object.keys(fileSystem).join('  ') + '\n';
-            } else if (cmd.startsWith('cat')) {
-                if (cmd === 'cat') {
+            } else if (cleanCmd.startsWith('cat')) {
+                const parts = cleanCmd.split(' ');
+                if (parts.length === 1) {
                     output = "cat: illegal option -- -\nusage: cat [file …]\n";
                 } else {
-                    const fileName = cmd.split(' ')[1];
-                    output = (fileSystem[fileName] || `cat: ${fileName}: No such file or directory`) + '\n';
+                    output = (fileSystem[parts[1]] || `cat: ${parts[1]}: No such file or directory`) + '\n';
                 }
-            } else if (cmd === 'uname' || cmd === 'uname -a') {
+            } else if (cleanCmd === 'uname' || cleanCmd === 'uname -a') {
                 output = 'TrueBSD cv.cryptopunks.org 2.0-RELEASE TrueBSD 2.0-RELEASE #0 releng/2.0-n268512-b7c1c3cbdea: Tue Mar 10 06:12:34 UTC 2026     me@cryptopunks.org:/usr/obj/usr/src/amd64.amd64/sys/GENERIC amd64\n';
-            } else if (cmd === 'help') {
-                output = "Available commands: ls, cat, uname, help, exploit, halt\n";
-            } else if (cmd === 'exploit') {
+            } else if (cleanCmd === 'exploit') {
                 simulatePanic(cmd);
                 return;
-            } else if (cmd === 'halt') {
+            } else if (cleanCmd === 'halt') {
                 handleHalt(cmd);
                 return;
-            } else if (cmd !== '') {
-                terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>bash: ${cmd}: command not found</p>`;
-                setTimeout(scrollToInput, 50);
-                return;
+            } else if (cleanCmd === 'help') {
+                output = "Available commands: ls, cat, uname, help, exploit, halt\n";
+            } else if (cleanCmd !== '') {
+                output = `bash: ${cleanCmd}: command not found\n`;
             }
 
-            terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>${output.replace(/\n/g, '<br>')}</p>`;
-            setTimeout(scrollToInput, 50);
+            if (output) {
+                terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>${output.replace(/\n/g, '<br>')}</p>`;
+                setTimeout(scrollToInput, 50);
+            }
         }
 
-        // Десктопный ввод
-        document.addEventListener('keydown', (event) => {
+        mobileInput.addEventListener('keydown', (event) => {
             if (isSystemCrashed) return;
-            // Если фокус на mobile-input — он сам обрабатывает ввод через 'input' event
-            // Здесь обрабатываем только когда mobile-input НЕ в фокусе
-            if (document.activeElement === mobileInput) return;
+            if (event.key === 'Enter') {
+                const cmd = mobileInput.value.trim();
+                mobileInput.value = '';
+                inputDisplay.textContent = '';
+                processCommand(cmd);
+            }
+        });
 
+        document.addEventListener('keydown', (event) => {
+            if (isSystemCrashed || document.activeElement === mobileInput) return;
             if (event.key === 'Enter') {
                 const cmd = inputDisplay.textContent.trim();
                 inputDisplay.textContent = '';
@@ -297,19 +296,6 @@ KDB: stack backtrace:
             } else if (event.key === 'Backspace') {
                 inputDisplay.textContent = inputDisplay.textContent.slice(0, -1);
                 scrollToInput();
-            }
-        });
-
-        // Мобильный Enter
-        mobileInput.addEventListener('keydown', (event) => {
-            if (isSystemCrashed) return;
-            if (event.key === 'Enter') {
-                const cmd = mobileInput.value.trim();
-                mobileInput.value = '';
-                inputDisplay.textContent = '';
-                processCommand(cmd);
-            } else if (event.key === 'Backspace') {
-                // input event сам обновит inputDisplay через значение поля
             }
         });
     </script>
