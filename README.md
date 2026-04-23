@@ -1,1 +1,1 @@
-[https://cv.cryptopunks.org]()
+My CV: [cv.cryptopunks.org](https://cv.cryptopunks.org)
