@@ -1,0 +1,101 @@
+/* Minimalist Terminal Theme */
+body {
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    line-height: 1.4;
+}
+
+#terminal-output {
+    white-space: pre-wrap;
+    margin-bottom: 5px;
+}
+
+#input-display {
+    white-space: pre;
+}
+
+.terminal {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header, section, footer {
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #00ff00;
+    display: inline-block;
+}
+
+p {
+    margin-bottom: 5px;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Links */
+.list a, .link-styled {
+    color: #00ffff;
+    text-decoration: none;
+    border: 1px solid #00ffff;
+    padding: 2px 8px;
+}
+.list a:hover, .link-styled:hover {
+    background-color: #00ffff;
+    color: #000;
+}
+
+/* Text (spans) */
+.list span {
+    color: #00ff00;
+    text-decoration: none;
+    border: 1px solid #00ff00;
+    padding: 2px 8px;
+}
+
+.exp {
+    padding-left: 10px;
+}
+
+.contacts {
+    padding-left: 10px;
+}
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background-color: #00ff00;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+a:hover {
+    background-color: #00ffff;
+    color: #000;
+}
+
+/* Prompt and Command Styles */
+.prompt-user {
+    color: #cc3333; /* Dark reddish color */
+}
+
+.prompt-sep {
+    color: #3366cc; /* Blueish color */
+}
+
+.command {
+    color: #ffffff; /* White command text */
+}

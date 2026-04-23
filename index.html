@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cv@cryptopunks:~$</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="terminal">
+        <header>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat url.txt</span></p>
+            <p>Current page: <a href="https://cv.cryptopunks.org" target="_blank" class="link-styled">cv.cryptopunks.org</a></p>
+        </header>
+
+        <header>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat profile.txt</span></p>
+            <h1>Liosha Sakalou</h1>
+            <p>Linux Security Engineer | Penetration Tester</p>
+            <p>Location: Tbilisi, Georgia</p>
+        </header>
+
+        <section>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat about.txt</span></p>
+            <p>I'm a Linux security engineer and penetration tester with 10+ years of hands-on experience. I help businesses of all sizes find real vulnerabilities before attackers do — and fix them properly. My work spans web and API pentesting, Linux system hardening, Docker security audits, intrusion detection, and incident forensics. I'm an active bug bounty hunter on HackerOne, which means I stay sharp on real-world attack techniques — not just theory. I don't trust defaults. I dig into how systems actually work, find what scanners miss, and deliver findings that are clear enough to act on immediately. If you need someone who thinks like an attacker but works on your side — let's talk.</p>
+        </section>
+
+        <section>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat projects.txt</span></p>
+            <div class="list">
+                <a href="https://truebsdorg.github.io" target="_blank">TrueBSD</a>
+                <a href="https://cryptopunks.org" target="_blank">cryptopunks.org</a>
+                <a href="https://canirun.github.io/" target="_blank">Tbilisi, can i Run</a>
+            </div>
+        </section>
+
+        <section>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat languages.txt</span></p>
+            <div class="list">
+                <span>Belarusian (Native)</span>
+                <span>Russian (Native)</span>
+                <span>Polish (Elementary)</span>
+                <span>English (Limited Working)</span>
+                <span>Ukrainian (Limited Working)</span>
+                <span>Georgian (Elementary)</span>
+            </div>
+        </section>
+
+        <section>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat experience.txt</span></p>
+            <div class="exp">
+                <p>> Freelance | Penetration Tester | 2024 — Present</p>
+                <p>> RevenueLab.biz | Penetration Tester | 2019 — 2023</p>
+                <p>> Enchee | System Administrator | 2014 — 2019</p>
+                <p>> Freelance | Software Developer (Python/Flask) | 2014 — 2019</p>
+                <p>> vkusnoserver.ru | SysAdmin | 2014</p>
+                <p>> Koshik Idey | PHP programmer | 2012 — 2013</p>
+                <p>> Codex-Soft | Drupal-expert | 2012</p>
+                <p>> Bitech Krakow | SysAdmin (FreeBSD/Linux) | 2011 — 2012</p>
+                <p>> Streamline VAS | SysAdmin/Programmer | 2006 — 2011</p>
+                <p>> TrueBSD Project | Main Developer | 2007 — 2009</p>
+                <p>> Mobile Communication | SysAdmin | 2004 — 2006</p>
+            </div>
+        </section>
+
+        <section>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat education.txt</span></p>
+            <div class="contacts">
+                <p>> Russian University of Cooperation (2008-2012)</p>
+                <p>> Belarusian College of Business and Law (2004-2008)</p>
+            </div>
+        </section>
+
+        <section>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">cat contacts.txt</span></p>
+            <div class="contacts">
+                <p>Email: <a href="mailto:root@cryptopunks.org" class="link-styled">root@cryptopunks.org</a></p>
+            </div>
+        </section>
+
+        <section>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">help</span></p>
+            <p>Available commands: ls, cat, uname, help, exploit, halt</p>
+        </section>
+
+        <footer>
+            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span id="input-display" class="command"></span><span class="cursor">_</span></p>
+        </footer>
+    </div>
+    
+    <script>
+        let isSystemCrashed = false;
+        const inputDisplay = document.getElementById('input-display');
+        const terminalOutput = document.getElementById('terminal-output') || document.createElement('div');
+        terminalOutput.id = 'terminal-output';
+        document.querySelector('.terminal').insertBefore(terminalOutput, document.querySelector('footer'));
+        
+        function scrollToInput() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        async function handleHalt(command) {
+            isSystemCrashed = true;
+            terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${command}</span></p>`;
+            
+            const haltMessages = [
+                "Waiting (max 60 seconds) for system process `vnlru' to stop... done",
+                "Waiting (max 60 seconds) for system process `bufdaemon' to stop... done",
+                "Waiting (max 60 seconds) for system process `syncer' to stop... done",
+                "",
+                "Stopping cron.",
+                "Stopping sshd.",
+                "Stopping local_unbound.",
+                "Stopping ntpd.",
+                "Stopping syslogd.",
+                "Writing entropy file: .",
+                "Terminated",
+                "",
+                "Updating motd:.",
+                "Unmounting file systems.",
+                "Unmounting /home.",
+                "Unmounting /tmp.",
+                "Unmounting /var.",
+                "Unmounting /usr.",
+                "syncing disks... vnode cycler... done",
+                "",
+                "All buffers synced.",
+                "Uptime: 1h24m15s",
+                "The operating system has halted.",
+                "Please press any key to reboot."
+            ];
+
+            document.querySelector('footer').style.display = 'none';
+
+            for (let i = 0; i < haltMessages.length; i++) {
+                terminalOutput.innerHTML += `<p style="margin: 0;">${haltMessages[i]}</p>`;
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                const delay = (i >= haltMessages.length - 3) ? 800 : Math.floor(Math.random() * (250 - 50 + 1)) + 50;
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+            window.location.href = 'halt.jpg';
+        }
+        
+        const fileSystem = {
+            "profile.txt": "Liosha Sakalou\nLinux Security Engineer | Penetration Tester\nLocation: Tbilisi, Georgia",
+            "about.txt": "I'm a Linux security engineer and penetration tester with 10+ years of hands-on experience. I help businesses of all sizes find real vulnerabilities before attackers do — and fix them properly. My work spans web and API pentesting, Linux system hardening, Docker security audits, intrusion detection, and incident forensics. I'm an active bug bounty hunter on HackerOne, which means I stay sharp on real-world attack techniques — not just theory. I don't trust defaults. I dig into how systems actually work, find what scanners miss, and deliver findings that are clear enough to act on immediately. If you need someone who thinks like an attacker but works on your side — let's talk.",
+            "skills.txt": "Bash, Linux/FreeBSD, Python, Pentest, Burp Suite, OWASP ZAP, Docker, Bug Bounty, Forensics",
+            "languages.txt": "Belarusian (Native), Russian (Native), Polish (Elementary), English (Limited Working), Ukrainian (Limited Working), Georgian (Elementary)",
+            "experience.txt": "Freelance (Pentester, 2024-Present), RevenueLab.biz (Pentester, 2019-2023), Enchee (SysAdmin, 2014-2019)...",
+            "education.txt": "Russian University of Cooperation (2008-2012), Belarusian College of Business and Law (2004-2008)",
+            "contacts.txt": "Email: root@cryptopunks.org",
+            "url.txt": "cv.cryptopunks.org",
+            "projects.txt": "TrueBSD: https://truebsdorg.github.io\ncryptopunks.org: https://cryptopunks.org\nTbilisi, can i Run: https://canirun.github.io/"
+        };
+
+        function simulatePanic(command) {
+            isSystemCrashed = true;
+            terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${command}</span></p>`;
+
+            setTimeout(async () => {
+                document.querySelector('footer').style.display = 'none';
+
+                const logLines = [
+                    "[*] Target: TrueBSD 2.0-RELEASE amd64",
+                    "[*] Searching for kernel symbols...",
+                    "    [+] Found native_set_self_p_comm at 0xffffffff80b01230",
+                    "    [+] Found allproc at 0xffffffff81234560",
+                    "[*] Crafting KROP chain (Kernel ROP)...",
+                    "    [!] FreeBSD kernel stack protection: Active",
+                    "    [!] Bypassing SMEP/SMAP...",
+                    "[*] Allocating memory via mmap...",
+                    "[*] Triggering kernel trap via ioctl…"
+                ];
+
+                for (const line of logLines) {
+                    terminalOutput.innerHTML += `<p style="margin: 0;">${line.replace(/\s/g, '&nbsp;')}</p>`;
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 100));
+                }
+
+                const panicBlock = `
+<pre style="color: white; margin: 0; font-family: 'Courier New', Courier, monospace;">
+Fatal trap 12: page fault while in kernel mode
+panic: General Protection Fault
+cpuid = 1
+KDB: enter: panic
+[ thread pid 1337 tid 100056 ]
+Stopped at      exploit_func+0x42:      movq    (%rax),%rdi
+db>
+
+Fatal trap 12: page fault while in kernel mode
+cpuid = 0; apic id = 00
+fault virtual address   = 0x0
+fault error code        = make write access, privileges enforced
+instruction pointer     = 0x20:0xffffffff80b2d1e0
+stack pointer           = 0x28:0xfffffe0012345678
+frame pointer           = 0x28:0xfffffe00123456a0
+code segment            = base 0x0, limit 0xfffff, type 0x1b
+                        = DPL 0, pres 1, long 1, def32 0, gran 1
+processor eflags        = interrupt enabled, resume, IOPL = 0
+current process         = 1337 (exploit)
+trap number             = 12
+panic: page fault
+cpuid = 0
+time = 1713888000
+KDB: stack backtrace:
+#0 0xffffffff80b2d1e0 at exploit+0x0
+</pre>`;
+                terminalOutput.innerHTML += panicBlock;
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 500);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (isSystemCrashed) return;
+            
+            if (event.key === 'Enter') {
+                const cmd = inputDisplay.textContent.trim();
+                let output = '';
+                
+                if (cmd === 'ls') {
+                    output = Object.keys(fileSystem).join('  ') + '\n';
+                } else if (cmd.startsWith('cat')) {
+                    if (cmd === 'cat') {
+                        output = "cat: illegal option -- -\nusage: cat [-belnstuv] [file …]\n";
+                    } else {
+                        const fileName = cmd.split(' ')[1];
+                        output = (fileSystem[fileName] || `cat: ${fileName}: No such file or directory`) + '\n';
+                    }
+                } else if (cmd === 'uname' || cmd === 'uname -a') {
+                    output = 'TrueBSD sakaloucv 2.0-RELEASE TrueBSD 2.0-RELEASE #0 releng/2.0-n268512-b7c1c3cbdea: Tue Mar 10 06:12:34 UTC 2026     root@truebsdorg.github.io:/usr/obj/usr/src/amd64.amd64/sys/GENERIC amd64\n';
+                } else if (cmd === 'help') {
+                    output = "Available commands: ls, cat, uname, help, exploit, halt\n";
+                } else if (cmd === 'exploit') {
+                    simulatePanic(cmd);
+                    inputDisplay.textContent = '';
+                    return;
+                } else if (cmd === 'halt') {
+                    handleHalt(cmd);
+                    return;
+                } else if (cmd !== '') {
+                    terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>bash: ${cmd}: command not found</p>`;
+                    inputDisplay.textContent = '';
+                    setTimeout(scrollToInput, 50);
+                    return;
+                }
+                
+                terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>${output.replace(/\n/g, '<br>')}</p>`;
+                inputDisplay.textContent = '';
+                setTimeout(scrollToInput, 50);
+            } else if (event.key.length === 1) {
+                inputDisplay.textContent += event.key;
+                scrollToInput();
+            } else if (event.key === 'Backspace') {
+                inputDisplay.textContent = inputDisplay.textContent.slice(0, -1);
+                scrollToInput();
+            }
+        });
+    </script>
+</body>
+</html>
