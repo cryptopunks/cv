@@ -85,16 +85,52 @@
         </section>
 
         <footer>
-            <p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span id="input-display" class="command"></span><span class="cursor">_</span></p>
+            <p>
+                <span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span>
+                <span id="input-display" class="command"></span><span class="cursor">_</span>
+            </p>
+            <!-- Скрытый input для мобильной клавиатуры -->
+            <input
+                id="mobile-input"
+                type="text"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                style="position:fixed; opacity:0; pointer-events:none; width:1px; height:1px; top:0; left:0;"
+            >
         </footer>
     </div>
     
     <script>
         let isSystemCrashed = false;
         const inputDisplay = document.getElementById('input-display');
-        const terminalOutput = document.getElementById('terminal-output') || document.createElement('div');
+        const mobileInput = document.getElementById('mobile-input');
+        const terminalOutput = document.createElement('div');
         terminalOutput.id = 'terminal-output';
         document.querySelector('.terminal').insertBefore(terminalOutput, document.querySelector('footer'));
+
+        // Фокус при тапе на терминал (для мобильных)
+        document.querySelector('.terminal').addEventListener('click', (e) => {
+            // Не перехватываем клики по ссылкам
+            if (e.target.tagName === 'A') return;
+            if (!isSystemCrashed) {
+                mobileInput.focus();
+            }
+        });
+
+        // Синхронизация мобильного ввода с визуальным дисплеем
+        mobileInput.addEventListener('input', () => {
+            inputDisplay.textContent = mobileInput.value;
+            scrollToInput();
+        });
+
+        // Обработка Enter на мобильном
+        mobileInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                setTimeout(() => { mobileInput.value = ''; }, 0);
+            }
+        });
         
         function scrollToInput() {
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -212,49 +248,68 @@ KDB: stack backtrace:
             }, 500);
         }
 
+        function processCommand(cmd) {
+            let output = '';
+
+            if (cmd === 'ls') {
+                output = Object.keys(fileSystem).join('  ') + '\n';
+            } else if (cmd.startsWith('cat')) {
+                if (cmd === 'cat') {
+                    output = "cat: illegal option -- -\nusage: cat [file …]\n";
+                } else {
+                    const fileName = cmd.split(' ')[1];
+                    output = (fileSystem[fileName] || `cat: ${fileName}: No such file or directory`) + '\n';
+                }
+            } else if (cmd === 'uname' || cmd === 'uname -a') {
+                output = 'TrueBSD cv.cryptopunks.org 2.0-RELEASE TrueBSD 2.0-RELEASE #0 releng/2.0-n268512-b7c1c3cbdea: Tue Mar 10 06:12:34 UTC 2026     me@cryptopunks.org:/usr/obj/usr/src/amd64.amd64/sys/GENERIC amd64\n';
+            } else if (cmd === 'help') {
+                output = "Available commands: ls, cat, uname, help, exploit, halt\n";
+            } else if (cmd === 'exploit') {
+                simulatePanic(cmd);
+                return;
+            } else if (cmd === 'halt') {
+                handleHalt(cmd);
+                return;
+            } else if (cmd !== '') {
+                terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>bash: ${cmd}: command not found</p>`;
+                setTimeout(scrollToInput, 50);
+                return;
+            }
+
+            terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>${output.replace(/\n/g, '<br>')}</p>`;
+            setTimeout(scrollToInput, 50);
+        }
+
+        // Десктопный ввод
         document.addEventListener('keydown', (event) => {
             if (isSystemCrashed) return;
-            
+            // Если фокус на mobile-input — он сам обрабатывает ввод через 'input' event
+            // Здесь обрабатываем только когда mobile-input НЕ в фокусе
+            if (document.activeElement === mobileInput) return;
+
             if (event.key === 'Enter') {
                 const cmd = inputDisplay.textContent.trim();
-                let output = '';
-                
-                if (cmd === 'ls') {
-                    output = Object.keys(fileSystem).join('  ') + '\n';
-                } else if (cmd.startsWith('cat')) {
-                    if (cmd === 'cat') {
-                        output = "cat: illegal option -- -\nusage: cat [file …]\n";
-                    } else {
-                        const fileName = cmd.split(' ')[1];
-                        output = (fileSystem[fileName] || `cat: ${fileName}: No such file or directory`) + '\n';
-                    }
-                } else if (cmd === 'uname' || cmd === 'uname -a') {
-                    output = 'TrueBSD cv.cryptopunks.org 2.0-RELEASE TrueBSD 2.0-RELEASE #0 releng/2.0-n268512-b7c1c3cbdea: Tue Mar 10 06:12:34 UTC 2026     me@cryptopunks.org:/usr/obj/usr/src/amd64.amd64/sys/GENERIC amd64\n';
-                } else if (cmd === 'help') {
-                    output = "Available commands: ls, cat, uname, help, exploit, halt\n";
-                } else if (cmd === 'exploit') {
-                    simulatePanic(cmd);
-                    inputDisplay.textContent = '';
-                    return;
-                } else if (cmd === 'halt') {
-                    handleHalt(cmd);
-                    return;
-                } else if (cmd !== '') {
-                    terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>bash: ${cmd}: command not found</p>`;
-                    inputDisplay.textContent = '';
-                    setTimeout(scrollToInput, 50);
-                    return;
-                }
-                
-                terminalOutput.innerHTML += `<p><span class="prompt-user">cv@cryptopunks</span><span class="prompt-sep">:~$</span> <span class="command">${cmd}</span><br>${output.replace(/\n/g, '<br>')}</p>`;
                 inputDisplay.textContent = '';
-                setTimeout(scrollToInput, 50);
+                processCommand(cmd);
             } else if (event.key.length === 1) {
                 inputDisplay.textContent += event.key;
                 scrollToInput();
             } else if (event.key === 'Backspace') {
                 inputDisplay.textContent = inputDisplay.textContent.slice(0, -1);
                 scrollToInput();
+            }
+        });
+
+        // Мобильный Enter
+        mobileInput.addEventListener('keydown', (event) => {
+            if (isSystemCrashed) return;
+            if (event.key === 'Enter') {
+                const cmd = mobileInput.value.trim();
+                mobileInput.value = '';
+                inputDisplay.textContent = '';
+                processCommand(cmd);
+            } else if (event.key === 'Backspace') {
+                // input event сам обновит inputDisplay через значение поля
             }
         });
     </script>
