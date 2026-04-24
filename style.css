@@ -1,11 +1,11 @@
-/* Neon Purple Hacker Theme */
+/* Classic Green Terminal Theme with CRT Effect */
 body {
-    background-color: #0a0a0f;
-    color: #e100ff;
+    background-color: #000;
+    color: #00ff00;
     font-family: 'Courier New', Courier, monospace;
     padding: 20px;
     line-height: 1.4;
-    text-shadow: 0 0 5px #e100ff, 0 0 10px #e100ff;
+    text-shadow: 0 0 5px #00ff00;
     position: relative;
 }
 
@@ -48,9 +48,9 @@ header, section, footer {
 h1 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    border-bottom: 1px solid #e100ff;
+    border-bottom: 1px solid #00ff00;
     display: inline-block;
-    text-shadow: 0 0 10px #e100ff;
+    text-shadow: 0 0 8px #00ff00;
 }
 
 p {
@@ -70,22 +70,20 @@ p {
     border: 1px solid #00ffff;
     padding: 2px 8px;
     text-shadow: 0 0 5px #00ffff;
-    box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
 }
 .list a:hover, .link-styled:hover {
     background-color: #00ffff;
-    color: #0a0a0f;
-    box-shadow: 0 0 15px #00ffff;
+    color: #000;
     text-shadow: none;
 }
 
 /* Text (spans) */
 .list span {
-    color: #e100ff;
+    color: #00ff00;
     text-decoration: none;
-    border: 1px solid #e100ff;
+    border: 1px solid #00ff00;
     padding: 2px 8px;
-    text-shadow: 0 0 5px #e100ff;
+    text-shadow: 0 0 5px #00ff00;
 }
 
 .exp {
@@ -100,9 +98,9 @@ p {
     display: inline-block;
     width: 10px;
     height: 18px;
-    background-color: #e100ff;
+    background-color: #00ff00;
     animation: blink 1s infinite;
-    box-shadow: 0 0 10px #e100ff;
+    box-shadow: 0 0 8px #00ff00;
 }
 
 @keyframes blink {
@@ -111,20 +109,19 @@ p {
 
 a:hover {
     background-color: #00ffff;
-    color: #0a0a0f;
-    box-shadow: 0 0 15px #00ffff;
+    color: #000;
     text-shadow: none;
 }
 
 /* Prompt and Command Styles */
 .prompt-user {
-    color: #ff0066;
-    text-shadow: 0 0 5px #ff0066;
+    color: #cc3333;
+    text-shadow: 0 0 5px #cc3333;
 }
 
 .prompt-sep {
-    color: #00ffff;
-    text-shadow: 0 0 5px #00ffff;
+    color: #3366cc;
+    text-shadow: 0 0 5px #3366cc;
 }
 
 .command {
